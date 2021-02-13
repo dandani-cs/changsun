@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'order_view' %}">View Orders</a>
+
+        {% if user.is_superuser %}
+        <a href="{% url 'employee_add' %}">Add employee</a>
+        {% endif %}
+
+    {% endif %}
+{% endblock content %}

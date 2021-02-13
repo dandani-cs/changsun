@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Changsan LaundryShop</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link href="{% static 'css/signUp.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+      <div class="animate-bottom">
+<section class = "Form my-4 mx-5">
+  <div class = "container">
+    <div class = "row no-gutters">
+  <div class = "col-lg-5">
+      <img src = "{% static 'img/login_form.png' %}" class="img-fluid" alt="Changsan Logo">
+  </div>
+    <div class = "col-lg-7 px-4 pt-4">
+      <h1 class = "font-weight-bold" style= "color: #00A8CB;"> Changsan Laundry </h1>
+
+      <h4 class = "mb-2"> Create Account </h4>
+    <form method="post">
+
+        <div class="col-lg-8 form-input">
+            {% csrf_token %}
+        {% for field in customuser_form %}
+            <div class = "form-group">
+                {{ field.label_tag}}
+                {{ field }}
+            </div>
+        {% endfor %}
+        {% for field in customeruser_form %}
+            <div class = "form-group">
+                {{ field.label_tag}}
+                {{ field }}
+            </div>
+        {% endfor %}
+
+        {% if customuser_form.errors %}
+            {% for field in customuser_form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in customuser_form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+            {% for field in customeruser_form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in customeruser_form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <button type="submit" name="button" class = "btn1 mt-2" value="signup"> Create Account </button>
+        <p class = "mt-1 mb-0" style = "font-size: 12px;"> Already have an account? <a href = "{% url 'final_login' %}"> Login Here </a> </p>
+    </div>
+    </form>
+
+    <div class = "panel-footer text-right">
+                    <small> &copy; Changsan Laundry </small>
+                </div>
+              </div>
+            </div>
+            </div>
+          </section>
+      </div>
+
+      </body>
+</html>

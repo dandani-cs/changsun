@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url("../img/animated-bg.gif") no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Poppins'. sans-serif;
+}
+
+.row{
+  background: white;
+  border-radius: 30px;
+  box-shadow: 12px 12px 22px rgba(0, 0, 0, 0.4);
+}
+
+.form-group input {
+  border: 2px solid black;
+  border-radius: 4px;
+}
+
+.form-group input:focus {
+  border: 3px solid #228295;
+}
+
+ .row h1 {
+   color: #00A8CB;
+ }
+
+img{
+  border-radius:30px;
+}
+
+.container{
+  opacity: .95;
+}
+
+.btn1 {
+  border: none;
+  outline: none;
+  height: 50px;
+  width: 100%;
+  background-color: #00A8CB;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.btn1:hover {
+  background-color: #228295;
+}
+
+a {
+  color: #00A8CB;
+}
+
+a:hover {
+  color: #228295;
+}
+
+.form-group {
+  margin-bottom: 9px;
+}
+
+.form-group label {
+  margin-bottom: 0px;
+}
+
+.animate-bottom {
+  position:relative;
+  animation:animatebottom 0.4s
+  }
+
+@keyframes
+animatebottom {
+  from {bottom:-200px;opacity:0} to{bottom:0;opacity:1}}
+
+<div class="animate-bottom">
+</div>

@@ -1,0 +1,89 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url("../img/animated-bg.gif") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.row{
+  background: white;
+  border-radius: 30px;
+  box-shadow: 12px 12px 22px rgba(0, 0, 0, 0.4);
+}
+
+img{
+  border-radius:30px;
+}
+
+.container{
+  opacity: .85;
+}
+
+.form-group input {
+  height: 42px;
+  border: 2px solid black;
+  border-radius: 4px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  padding-left: 54px;
+}
+
+.form-group input:focus {
+  border: 3px solid #228295;
+}
+
+.form-group::before {
+  font-family: 'Font Awesome\ 5 Free';
+  content: "\f1fa";
+  position: absolute;
+  font-size: 20px;
+  left: 28px;
+  padding-top: 4px;
+  color: #555e60;
+}
+
+.form-group:last-of-type::before {
+  content: "\";
+}
+
+.btn1 {
+  border: none;
+  outline: none;
+  height: 50px;
+  width: 100%;
+  background-color: #00A8CB;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.btn1:hover {
+  background-color: #228295;
+}
+
+a {
+  color: #00A8CB;
+}
+
+a:hover {
+  color: #228295;
+}
+.panel-footer {
+  padding-top: 40px;
+}
+
+.animate-bottom {
+  position:relative;
+  animation:animatebottom 0.4s
+  }
+
+@keyframes
+animatebottom {
+  from {bottom:-200px;opacity:0} to{bottom:0;opacity:1}}
+
+<div class="animate-bottom">
+</div>

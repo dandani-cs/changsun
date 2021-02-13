@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Changsan LaundryShop</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link href="{% static 'css/loginForm.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+      <div class="animate-bottom">
+      <section class = "Form my-4 mx-5">
+        <div class = "container">
+          <div class = "row no-gutters">
+        <div class = "col-lg-5">
+            <img src = "{% static 'img/login_form.png' %}" class="img-fluid" alt="Changsan Logo">
+        </div>
+          <div class = "col-lg-7 px-5 pt-5">
+            <h1 class = "font-weight-bold" style= "color: #00A8CB; font-size: 350%"> Changsan Laundry </h1>
+            <h6 class = "mb-5"> #Blk. 45 Lot 7 Villa Zaragosa Phase 1, Turo,  Bocaue, Bulacan </h6>
+              <h4 class = "mb-4"> Sign into your account: </h4>
+            <form method="post">
+                {% csrf_token %}
+              <div class="col-lg-8 form-input">
+                <div class = "form-group">
+                    <input type = "email"  placeholder = "Enter e-mail" class = "form-control" name="email" autofocus="" required="required" id="id_email">
+                </div>
+                <div class = "form-group">
+                    <input type = "password" placeholder = "Enter password" class = "form-control" name="password" required="required" id="id_password">
+                </div>
+                    <button type = "submit" class = "btn1 mt-1 mb-4"> Login </button>
+                    {% if error %}
+                        <p> Wrong email or password </p>
+                    {% endif %}
+              </div>
+            </form>
+
+            <div class = "panel mb-2">
+            <a href = "#"> Forgot Password? </a>
+            <p> Don't have an account? <a href = "{% url 'customer_signup' %}"> Register Here </a> </p>
+            <p> Get redirected on our Homepage by <a href = "{% url 'home' %}"> Clicking Here! </a> </p>
+            </div>
+            <div class = "panel-footer text-right">
+                <small> &copy; Changsan Laundry </small>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+  </div>
+  </body>
+
+</html>

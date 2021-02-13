@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Order</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/d0e66af1fa.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+      <div class="view-account">
+          <section class="module">
+              <div class="module-inner">
+                  <div class="side-bar">
+                      <div class="user-info">
+                          <img class="img-profile img-responsive center-block" src="{% static 'img/c_logo.png' %}" alt="changsan logo">
+                          <ul class="meta list list-unstyled">
+                              <li class="name">{{ name }}</li>
+                              <li class="email"><a href="#">{{ user_email }}</a></li>
+                          </ul>
+                      </div>
+              		<nav class="side-menu">
+          				<ul class="nav">
+                            <li><a href="{% url 'profile' %}"><span class="fa fa-user"></span> Profile</a></li>
+          					<li><a href="{% url 'customer_edit_profile' %}" target="_self"><span class="fa fa-cog"></span> Edit User Profile</a></li>
+                            <li><a href="{% url 'user_edit_password' %}" target="_self"><span class="fas fa-lock"></span> Change Password</a></li>
+                            {% if user.is_superuser %}
+                                <li><a href="{% url 'employee_add' %}" target="_self"><span class="fas fa-user-plus"></span> Add Employee</a></li>
+                            {% endif %}
+          					<li><a href="{% url 'order_new' %}"><span class="fas fa-plus-square"></span> Create Order</a></li>
+          					<li class="active"><a href="{% url 'order_view' %}"><span class="fas fa-shopping-basket"></span> My Orders</a></li>
+          					<li><a href="{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span> Logout</a></li>
+
+          				</ul>
+          			</nav>
+                  </div>
+                  <div class="content-panel my-5">
+                      <h2 class="title">Changsan Laundry Shop </h2>
+
+                      <fieldset class="fieldset">
+                          <h3 class="fieldset-title">Order information: </h3>
+                          <p> Reference ID: {{ order.ref_id }} </p>
+                          <p> Service: {{ order.service }} </p>
+                          <p> Status: {{ order.status }} </p>
+                          <p> Provision: {{ order.provision_type}} </p>
+                          <p> Retrival: {{ order.retrieval_type }} </p>
+                          <p> Order time: {{ order.order_time }} </p>
+
+                          <h3 class="fieldset-title"> Customer information: </h3>
+                          <p> Customer: {{ order.customer.user.first_name }} {{ order.customer.user.last_name}} </p>
+                          <p> Email: {{ order.customer.user.email }} </p>
+                          <p> Contact Number: {{ order.customer.contact }} </p>
+                          <p> Address: {{ order.address }} </p>
+
+                          <h3 class="fieldset-title"> Other information </h3>
+                          <p> Delivery price: Php{{ order.delivery_price }} </p>
+                          <p> Service price: Php{{ order.service_price }} </p>
+                          <p> Weight: {{ order.weight }} </p>
+
+
+
+                      </fieldset>
+                      <div class = "panel-footer text-right m-5">
+                          <small> &copy; Changsan Laundry </small>
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class = "container-fluid padding">
+      <div class = "row text-center">
+
+        <div class = "col-12">
+          <hr5> &copy; Federez, Lindio, Samonte, Vergara </h5>
+        </div>
+        </div>
+    </footer>
+
+
+
+</body>
+</html>
