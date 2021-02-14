@@ -91,6 +91,12 @@
                           <p> Weight: {{ order.weight }}kg </p>
 
 
+                          <form method="post">
+                              {% csrf_token %}
+                              {% if order.status != 6 %}
+                              <button type="submit" name="update_fetch" class="btn btn-primary mt-3">{{ order_status_name }} </button>
+                              {% endif %}
+                          </form>
 
                       </fieldset>
                       <div class = "panel-footer text-right m-5">

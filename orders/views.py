@@ -136,7 +136,22 @@ class ReceivedOrderView(LoginRequiredMixin, View):
 
 class OrderDetailView(LoginRequiredMixin, View):
     def get(self, request, ref_id):
-        return render(request, 'order_details.html', {'order': get_order_by_ref_id(ref_id)})
+        order = get_order_by_ref_id(ref_id)
+        print(order.status)
+        return render(request, 'order_details.html', {'order': order,
+                                                      'order_status_name': ['Fetch', 'Received', 'Confirmed', 'Processing', 'Ready', 'Given', ''][order.status]
+                                                      })
+
+
+    def post(self, request, ref_id):
+        order = get_order_by_ref_id(ref_id)
+        order.status += 1
+
+        order.save()
+
+        return HttpResponseRedirect(reverse_lazy('order_detail', kwargs = {'ref_id': order.ref_id}))
+
+
 
 
 
