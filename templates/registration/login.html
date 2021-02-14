@@ -46,7 +46,7 @@
             </form>
 
             <div class = "panel mb-2">
-            <a href = "#"> Forgot Password? </a>
+            <a href = "{% url 'password_reset' %}"> Forgot Password? </a>
             <p> Don't have an account? <a href = "{% url 'customer_signup' %}"> Register Here </a> </p>
             <p> Get redirected on our Homepage by <a href = "{% url 'home' %}"> Clicking Here! </a> </p>
             </div>

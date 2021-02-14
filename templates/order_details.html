@@ -26,8 +26,7 @@
                       <div class="user-info">
                           <img class="img-profile img-responsive center-block" src="{% static 'img/c_logo.png' %}" alt="changsan logo">
                           <ul class="meta list list-unstyled">
-                              <li class="name">{{ name }}</li>
-                              <li class="email"><a href="#">{{ user_email }}</a></li>
+                              <li class="name">{{ request.user.first_name }} {{ request.user.last_name }} </li>
                           </ul>
                       </div>
               		<nav class="side-menu">
@@ -51,10 +50,33 @@
                       <fieldset class="fieldset">
                           <h3 class="fieldset-title">Order information: </h3>
                           <p> Reference ID: {{ order.ref_id }} </p>
-                          <p> Service: {{ order.service }} </p>
-                          <p> Status: {{ order.status }} </p>
-                          <p> Provision: {{ order.provision_type}} </p>
-                          <p> Retrival: {{ order.retrieval_type }} </p>
+                          <p> Service:
+                              {% if order.service == 0 %} Wash and Dry
+                              {% elif order.service == 1 %} Wash, Dry, Fold
+                              {% elif order.service == 2 %} Dry Cleaning
+                              {% elif order.service == 3 %} Laundromat Products
+                              {% endif %}
+                          </p>
+                          <p> Status:
+                              {% if order.status == 0 %} Cancelled
+                              {% elif order.status == 1 %} Fetch
+                              {% elif order.status == 2 %} Received
+                              {% elif order.status == 3 %} Confirmed
+                              {% elif order.status == 4 %} Processing
+                              {% elif order.status == 5 %} Ready
+                              {% elif order.status == 6 %} Given
+                              {% endif %}
+                          </p>
+                          <p> Provision:
+                              {% if order.provision_type == 0 %} Delivery
+                              {% else %} Drop-off
+                              {% endif %}
+                          </p>
+                          <p> Retrival:
+                              {% if order.retrieval_type == 0 %} Delivery
+                              {% else %} Pick-up
+                              {% endif %}
+                          </p>
                           <p> Order time: {{ order.order_time }} </p>
 
                           <h3 class="fieldset-title"> Customer information: </h3>
@@ -66,7 +88,7 @@
                           <h3 class="fieldset-title"> Other information </h3>
                           <p> Delivery price: Php{{ order.delivery_price }} </p>
                           <p> Service price: Php{{ order.service_price }} </p>
-                          <p> Weight: {{ order.weight }} </p>
+                          <p> Weight: {{ order.weight }}kg </p>
 
 
 

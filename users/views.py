@@ -36,7 +36,7 @@ class CustomerSignUpView(View):
             cuform.user = uform
             cuform.save()
 
-            return HttpResponseRedirect(reverse_lazy('home'))
+            return HttpResponseRedirect(reverse_lazy('signup_confirmed'))
 
         else:
             return render(request, 'signup.html', {'customuser_form': customuser_form, 'customeruser_form': customeruser_form})

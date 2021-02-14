@@ -27,18 +27,37 @@ class OrderService():
     SERVICE_WDF = 1
     SERVICE_DC = 2
     SERVICE_LP = 3
+    SERVICE_W = 4
+    SERVICE_D = 5
+    SERVICE_F = 6
+    SERVICE_SD = 7
+
 
     SERVICE_CHOICES = (
                        (SERVICE_WD, 'Wash and Dry'),
                        (SERVICE_WDF, 'Wash, Dry, and Fold'),
                        (SERVICE_DC, 'Dry Cleaning'),
-                       (SERVICE_LP, 'Laundromat Products')
+                       (SERVICE_LP, 'Laundromat Products'),
+                       (SERVICE_W, 'Wash'),
+                       (SERVICE_D, 'Dry'),
+                       (SERVICE_F, 'Fold'),
+                       (SERVICE_SD, 'Spin Dry')
 
     )
 
 
 
-class OrderType():
+class OrderProvisionType():
+    TYPE_DELIVERY = 0
+    TYPE_DROPOFF = 1
+
+    TYPE_CHOICES = (
+                    (TYPE_DELIVERY, 'Delivery'),
+                    (TYPE_DROPOFF, 'Drop-off')
+    )
+
+
+class OrderRetrievalType():
     TYPE_DELIVERY = 0
     TYPE_PICKUP = 1
 
@@ -56,8 +75,8 @@ class Order(models.Model):
     ref_id = models.CharField(max_length=6, primary_key=True, unique=True, default=generate_id)
     customer = models.ForeignKey('users.Customer', on_delete=models.SET_NULL, null=True)
 
-    provision_type = models.IntegerField(choices=OrderType.TYPE_CHOICES)
-    retrieval_type = models.IntegerField(choices=OrderType.TYPE_CHOICES)
+    provision_type = models.IntegerField(choices=OrderProvisionType.TYPE_CHOICES)
+    retrieval_type = models.IntegerField(choices=OrderRetrievalType.TYPE_CHOICES)
     status = models.IntegerField(choices=OrderStatus.STATUS_CHOICES)
     service = models.IntegerField(choices=OrderService.SERVICE_CHOICES)
 
@@ -67,3 +86,5 @@ class Order(models.Model):
     delivery_price = models.DecimalField(max_digits=6, decimal_places=2)
     service_price = models.DecimalField(max_digits=6, decimal_places=2)
     weight = models.DecimalField(max_digits=6, decimal_places=2)
+
+    comments = models.TextField(max_length=1000, null=True, blank=True)

@@ -52,6 +52,7 @@ class OrderCreateView(LoginRequiredMixin, View):
                 elif customuser_form.is_valid() and customeruser_form.is_valid():
                     uform = customuser_form.save(commit=False)
                     uform.is_customer = True
+                    uform.email = None
                     uform.save()
 
                     cuform = customeruser_form.save(commit=False)
@@ -122,7 +123,6 @@ class ReceivedOrderView(LoginRequiredMixin, View):
         order = get_order_by_ref_id(ref_id)
 
         if received_form.is_valid():
-            order.service_price = received_form.cleaned_data.get("service_price")
             order.weight = received_form.cleaned_data.get("weight")
 
             order.save()
@@ -131,6 +131,7 @@ class ReceivedOrderView(LoginRequiredMixin, View):
 
         else:
             return render(request, 'order_received.html', {'received_form': received_form})
+
 
 
 class OrderDetailView(LoginRequiredMixin, View):

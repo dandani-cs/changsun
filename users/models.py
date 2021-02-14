@@ -5,7 +5,7 @@ import uuid
 # Create your models here.
 class User(AbstractUser):
     username = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
-    email = models.EmailField(max_length=254, blank=True, unique=True)
+    email = models.EmailField(max_length=254, unique=True, null=True)
     first_name = models.CharField(max_length=20, null=False)
     last_name = models.CharField(max_length=20, null=False)
     is_customer = models.BooleanField(default=False)

@@ -1,5 +1,51 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  margin: -76px 0 0 -76px;
+  border: 16px solid #f3f3f3;
+  border-radius: 100%;
+  border-top: 16px solid #00D6DE;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
 
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+}
 
 *{
   padding: 0;
@@ -7,11 +53,26 @@
   box-sizing: border-box;
 }
 
+
+.confirm i {
+  font-size: 200px;
+  color: #00DEAE;
+}
+
 body {
-  background: url("../img/animated-bg.gif") no-repeat center center fixed;
+  background: url(../img/animated-bg.gif) no-repeat center center fixed;
   background-size: cover;
   font-family: 'Poppins'. sans-serif;
 }
+
+.animate-bottom {
+  position:relative;
+  animation:animatebottom 0.4s
+  }
+
+@keyframes
+animatebottom {
+  from {bottom:-200px;opacity:0} to{bottom:0;opacity:1}}
 
 .row{
   background: white;
@@ -51,10 +112,25 @@ img{
   font-weight: bold;
 }
 
+.btn2 {
+  border: none;
+  outline: none;
+  height: 50px;
+  width: 75%;
+  background-color: #00A8CB;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
 .btn1:hover {
   background-color: #228295;
 }
 
+.btn2:hover {
+  background-color: #228295;
+}
 a {
   color: #00A8CB;
 }
@@ -67,18 +143,6 @@ a:hover {
   margin-bottom: 9px;
 }
 
-.form-group label {
+.label {
   margin-bottom: 0px;
 }
-
-.animate-bottom {
-  position:relative;
-  animation:animatebottom 0.4s
-  }
-
-@keyframes
-animatebottom {
-  from {bottom:-200px;opacity:0} to{bottom:0;opacity:1}}
-
-<div class="animate-bottom">
-</div>

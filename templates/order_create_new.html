@@ -65,17 +65,10 @@
                                     </div>
                                   </div>
 
-                              <div class = "form-row col-md-12">
-                                <div class = "form-group col-md-6">
-                                    <label class = "label" for="inputAddress">Email-address: </label>
-                                    {{ customuser_form.email }}
-                                </div>
-
-                                  <div class = "form-group col-md-6">
+                                  <div class = "form-group col-md-12">
                                     <label class = "label" for="inputContact">Contact Number: </label>
                                     {{ customeruser_form.contact }}
                                   </div>
-                              </div>
                               {% endif %}
 
 
@@ -104,6 +97,11 @@
                           <div class = "form-group col-md-12">
                             <label class = "label" for="inputStatus">Status: </label>
                             {{ baseorder_form.status }}
+                          </div>
+
+                          <div class = "form-group col-md-12">
+                            <label class = "label" for="inputStatus">Comments: </label>
+                            {{ baseorder_form.comments }}
                           </div>
 
                             <div class = "text-center" >

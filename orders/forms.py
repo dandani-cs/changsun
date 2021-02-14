@@ -9,23 +9,23 @@ class BaseOrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('provision_type', 'retrieval_type', 'service', 'address', 'status')
+        fields = ('provision_type', 'retrieval_type', 'service', 'address', 'status', 'comments')
         widgets = {
                    "provision_type": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2", 'id': 'provision-choice'}),
                    "retrieval_type": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2", 'id': 'retrieval-choice'}),
                    "service": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2"}),
                    "address": forms.TextInput(attrs = {"class": "form-control", 'id': 'address-input'}),
                    "status": forms.Select(attrs={'class': "form-control"}),
+                   "comments": forms.Textarea(attrs={'class': "form-control"})
         }
 
 
 class UnregisteredUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
+        fields = ( 'first_name', 'last_name')
 
         widgets = {
-                   'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': "Enter e-mail", 'required': 'required'}),
                    'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Enter First Name"}),
                    'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Enter Last Name"}),
         }
@@ -48,13 +48,8 @@ class UnregisteredCustomerForm(forms.ModelForm):
 class ReceivedOrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('service_price', 'weight')
+        fields = ('weight',)
 
         widgets = {
-                   "service_price": forms.TextInput(attrs={'class': "form-control"}),
                    "weight": forms.NumberInput(attrs={'class': "form-control"}),
-        }
-
-        labels = {
-                  'service_price': _("Service Price:")
         }
