@@ -7,7 +7,8 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Order
+import math
+from .models import Order, OrderService
 from users.models import Customer, User
 from .forms import BaseOrderForm, UnregisteredUserForm, UnregisteredCustomerForm, ReceivedOrderForm
 
@@ -115,18 +116,55 @@ class ReceivedOrderView(LoginRequiredMixin, View):
     def get(self, request, ref_id):
         order = get_order_by_ref_id(ref_id)
         received_form = ReceivedOrderForm(instance = order, prefix="received_form")
+        is_service_products = (order.service == OrderService.SERVICE_LP)
 
-        return render(request, 'order_received.html', {'received_form': received_form} )
+        return render(request, 'order_received.html', {
+                    'received_form'  : received_form,
+                    'is_laundro_prod': is_service_products
+                })
 
     def post(self, request, ref_id):
         received_form = ReceivedOrderForm(request.POST, prefix='received_form')
 
         order = get_order_by_ref_id(ref_id)
 
+        BASE_SERVICE_PRICE = {
+                    OrderService.SERVICE_WD  : 185,
+                    OrderService.SERVICE_WDF : 185,
+                    OrderService.SERVICE_DC  : 75,
+                    OrderService.SERVICE_LP  : 15,
+                    OrderService.SERVICE_W   : 50,
+                    OrderService.SERVICE_D   : 60,
+                    OrderService.SERVICE_F   : 25,
+                    OrderService.SERVICE_SD  : 75,
+                }
+
+        PER_LOAD_SERVICES = [
+                    OrderService.SERVICE_WD,
+                    OrderService.SERVICE_W,
+                    OrderService.SERVICE_D,
+                    OrderService.SERVICE_WDF
+                ]
+
+
         if received_form.is_valid():
             order.weight = received_form.cleaned_data.get("weight")
+            base_price   = BASE_SERVICE_PRICE[order.service]
+
+            if order.service in PER_LOAD_SERVICES:
+                additional = (BASE_SERVICE_PRICE[OrderService.SERVICE_F] if order.service == OrderService.SERVICE_WDF else 0)
+                load       = math.ceil(order.weight / 8)
+                print("Computed ({}) loads".format(load))
+
+                order.service_price = load * base_price + additional
+            else:
+                order.service_price = base_price * order.weight
+
+            print("Service ({}), Weight: ({}), Base Price ({})".format(order.service, order.weight, base_price))
+            print("Computed service price: ({})".format(order.service_price))
 
             order.save()
+
 
             return HttpResponseRedirect(reverse_lazy('order_view'))
 

@@ -54,7 +54,11 @@
                               {% csrf_token %}
 
                                     <div class = "form-group col-md-6">
-                                      <label class = "label" for = "inputLast">Weight </label>
+                                        {% if is_laundro_prod %}
+                                            <label class = "label" for = "inputLast">Pieces: </label>
+                                        {% else %}
+                                            <label class = "label" for = "inputLast">Weight: </label>
+                                        {% endif %}
                                       {{ received_form.weight }}
                                     </div>
                                   </div>
