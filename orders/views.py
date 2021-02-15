@@ -114,6 +114,9 @@ class OrderCreateView(LoginRequiredMixin, View):
 
 class ReceivedOrderView(LoginRequiredMixin, View):
     def get(self, request, ref_id):
+        if not request.user.is_employee and not request.user.is_superuser:
+            return HttpResponseRedirect(reverse_lazy('invalid'))
+
         order = get_order_by_ref_id(ref_id)
         received_form = ReceivedOrderForm(instance = order, prefix="received_form")
         is_service_products = (order.service == OrderService.SERVICE_LP)
@@ -176,6 +179,10 @@ class ReceivedOrderView(LoginRequiredMixin, View):
 class OrderDetailView(LoginRequiredMixin, View):
     def get(self, request, ref_id):
         order = get_order_by_ref_id(ref_id)
+        if not request.user.is_employee and not request.user.is_superuser and (request.user != order.customer.user):
+            return HttpResponseRedirect(reverse_lazy('invalid'))
+
+
         print(order.status)
         return render(request, 'order_details.html', {'order': order,
                                                       'order_status_name': ['Fetch', 'Received', 'Confirm', 'Processing', 'Ready', 'Given', ''][order.status]
@@ -254,6 +261,10 @@ class OrderEditView(LoginRequiredMixin, View):
 
     def get(self, request, ref_id, uid = None):
         order = get_order_by_ref_id(ref_id)
+
+        if not request.user.is_employee and not request.user.is_superuser and (request.user != order.customer.user):
+            return HttpResponseRedirect(reverse_lazy('invalid'))
+
         customuser_form = None
         customeruser_form = None
 
@@ -282,7 +293,7 @@ class OrderOptionView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse_lazy('order_new'))
 
 
-class CustomerSearchView(ListView):
+class CustomerSearchView(LoginRequiredMixin, ListView):
     model = Customer
     template_name = "user_search.html"
 

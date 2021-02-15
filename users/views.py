@@ -47,7 +47,7 @@ class CustomerSignUpView(View):
         return render(request, 'signup.html', {'customuser_form': customuser_form, 'customeruser_form': customeruser_form})
 
 
-class EmployeeAddView(AdminStaffRequiredMixin, View):
+class EmployeeAddView(LoginRequiredMixin, View):
     login_url = 'final_login'
     redirect_field_name = 'redirect_to'
     template_name = 'employee_add.html'
@@ -75,6 +75,9 @@ class EmployeeAddView(AdminStaffRequiredMixin, View):
             return render(request, 'employee_add.html', {'customuser_form': customuser_form, 'employeeuser_form': employeeuser_form})
 
     def get(self, request):
+        if not request.user.is_superuser:
+            return HttpResponseRedirect(reverse_lazy('invalid'))
+
         customuser_form = UserForm(prefix='customuser_form')
         employeeuser_form = EmployeeUserForm(prefix='employeeuser_form')
         return render(request, 'employee_add.html', {'customuser_form': customuser_form, 'employeeuser_form': employeeuser_form})

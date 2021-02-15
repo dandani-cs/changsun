@@ -3,10 +3,41 @@ body{
   width: 100%;
   font-family: 'Poppins',sans-serif;
   color: #222;
-  background: url("../img/animated-bg.gif");
+  background: url(../img/animated-bg.gif);
   background-repeat: repeat;
   background-attachment: fixed;
   background-position: center;
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+.no-access {
+  margin: 40px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.fieldset i {
+  font-size: 200px;
+  color: #FF2236;
+  text-align: center;
 }
 
 .form-group label {
@@ -15,18 +46,14 @@ body{
   font-weight: 500;
 }
 
-.email {
-    font-size: 14px;
-}
-
 input[type=text] {
 border: 2px solid black;
 border-radius: 4px;
 }
 
 input[type=email] {
-border: 2px solid black !important;
-border-radius: 4px !important;
+border: 2px solid black;
+border-radius: 4px;
 }
 
 input[type=password] {
@@ -38,13 +65,25 @@ input[type=password]:focus {
 border: 3px solid #228295;
 }
 
+.btn-primary1 {
+  background-color: #00A8CB;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #228295;
+  width: 50%;
+}
 
-.btn-primary {
+.btn-primary1:hover{
+  background-color: #228295;
+  border: 1px solid #228295;
+}
+
+.btn-primary  {
   background-color: #00A8CB;
   border: 1px solid #228295;
 }
 
-.btn-primary:hover {
+.btn-primary:hover  {
   background-color: #228295;
   border: 1px solid #228295;
 }
@@ -419,17 +458,4 @@ display: inline-block
   width: 40px;
   display: inline-block
 }
-}
-
-.btn-primary1 {
-  background-color: #00A8CB;
-  color: white;
-  font-weight: bold;
-  border: 1px solid #228295;
-  width: 50%;
-}
-
-.btn-primary1:hover{
-  background-color: #228295;
-  border: 1px solid #228295;
 }
