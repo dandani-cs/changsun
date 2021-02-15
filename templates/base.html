@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% block title %} {% endblock title %}
+  <title>Create Order</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,16 +14,52 @@
   <script src="https://kit.fontawesome.com/d0e66af1fa.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-  {% block pagecss %}
-
-  {% endblock pagecss %}
+  <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 </head>
 
 <body>
+  <div class="container">
+      <div class="view-account">
+          <section class="module">
+              <div class="module-inner">
+                  <div class="side-bar">
+                      <div class="user-info">
+                          <img class="img-profile img-responsive center-block" src="{% static 'img/c_logo.png' %}" alt="changsan logo">
+                          <ul class="meta list list-unstyled">
+                              <li class="name">{{ request.user.first_name }} {{ request.user.last_name }}</li>
+                          </ul>
+                      </div>
+              		<nav class="side-menu">
+          				<ul class="nav">
+                            <li><a href="{% url 'profile' %}"><span class="fa fa-user"></span> Profile</a></li>
+                            <li><a href="{% url 'customer_edit_profile' %}" target="_self"><span class="fa fa-cog"></span> Edit User Profile</a></li>
+                            <li><a href="{% url 'user_edit_password' %}" target="_self"><span class="fas fa-lock"></span> Change Password</a></li>
+                            {% if user.is_superuser %}
+                                <li><a href="{% url 'employee_add' %}" target="_self"><span class="fas fa-user-plus"></span> Add Employee</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'order_option' %}"><span class="fas fa-plus-square"></span> Create Order</a></li>
+                            <li class="active"><a href="{% url 'order_view' %}"><span class="fas fa-shopping-basket"></span> My Orders</a></li>
+                            <li><a href="{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span> Logout</a></li>
 
-  {% block content %}
+          				</ul>
+          			</nav>
+                  </div>
+                  <div class="content-panel my-5">
+                      <h2 class="title">Changsan Laundry Shop </h2>
 
-  {% endblock content %}
+                      <fieldset class="fieldset">
+                          <h3 class="fieldset-title">{% block header %}{% endblock %}</h3>
+                          {% block content %}
+                          {% endblock %}
+                      </fieldset>
+                      <div class = "panel-footer text-right m-5">
+                          <small> &copy; Changsan Laundry </small>
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </div>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -34,6 +71,8 @@
         </div>
         </div>
     </footer>
+
+
 
 </body>
 </html>

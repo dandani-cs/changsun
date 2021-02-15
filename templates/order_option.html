@@ -26,21 +26,20 @@
                       <div class="user-info">
                           <img class="img-profile img-responsive center-block" src="{% static 'img/c_logo.png' %}" alt="changsan logo">
                           <ul class="meta list list-unstyled">
-                              <li class="name">{{ name }}</li>
-                              <li class="email"><a href="#">{{ user_email }}</a></li>
+                              <li class="name">{{ request.user.first_name }} {{ request.user.last_name}}</li>
                           </ul>
                       </div>
               		<nav class="side-menu">
           				<ul class="nav">
                             <li><a href="{% url 'profile' %}"><span class="fa fa-user"></span> Profile</a></li>
-          					<li><a href="{% url 'customer_edit_profile' %}" target="_self"><span class="fa fa-cog"></span> Edit User Profile</a></li>
+                            <li><a href="{% url 'customer_edit_profile' %}" target="_self"><span class="fa fa-cog"></span> Edit User Profile</a></li>
                             <li><a href="{% url 'user_edit_password' %}" target="_self"><span class="fas fa-lock"></span> Change Password</a></li>
                             {% if user.is_superuser %}
                                 <li><a href="{% url 'employee_add' %}" target="_self"><span class="fas fa-user-plus"></span> Add Employee</a></li>
                             {% endif %}
-          					<li class="active"><a href="{% url 'order_new' %}"><span class="fas fa-plus-square"></span> Create Order</a></li>
-          					<li><a href="{% url 'order_view' %}"><span class="fas fa-shopping-basket"></span> My Orders</a></li>
-          					<li><a href="{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span> Logout</a></li>
+                            <li class="active"><a href="{% url 'order_option' %}"><span class="fas fa-plus-square"></span> Create Order</a></li>
+                            <li><a href="{% url 'order_view' %}"><span class="fas fa-shopping-basket"></span> My Orders</a></li>
+                            <li><a href="{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span> Logout</a></li>
 
           				</ul>
           			</nav>

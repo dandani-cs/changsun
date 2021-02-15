@@ -69,7 +69,7 @@ class EmployeeAddView(LoginRequiredMixin, View):
             euform.user = uform
             euform.save()
 
-            return HttpResponseRedirect(reverse_lazy('home'))
+            return HttpResponseRedirect(reverse_lazy('signup_confirmed'))
 
         else:
             return render(request, 'employee_add.html', {'customuser_form': customuser_form, 'employeeuser_form': employeeuser_form})
