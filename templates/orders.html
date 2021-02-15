@@ -68,7 +68,14 @@
                                 <tr>
                                     <td> <a href="{% url 'order_detail' order.ref_id %}"> {{ order.ref_id }} </a> </td>
                                     <td> {{ order.customer.user.first_name}} {{ order.customer.user.last_name }} </td>
-                                    <td> {{ order.status }} </td>
+                                    <td> {% if order.status == 0 %} Cancelled
+                                    {% elif order.status == 1 %} Fetch
+                                    {% elif order.status == 2 %} Received
+                                    {% elif order.status == 3 %} Confirmed
+                                    {% elif order.status == 4 %} Processing
+                                    {% elif order.status == 5 %} Ready
+                                    {% elif order.status == 6 %} Given
+                                    {% endif %}</td>
                                 </tr>
                             {% endfor %}
                           </tbody>

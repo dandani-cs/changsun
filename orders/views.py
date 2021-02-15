@@ -28,6 +28,7 @@ class OrderListView(LoginRequiredMixin, ListView):
         return queryset
 
 
+
 class OrderCreateView(LoginRequiredMixin, View):
     login_url = 'final_login'
     redirect_field_name = 'redirect_to'
@@ -139,7 +140,7 @@ class OrderDetailView(LoginRequiredMixin, View):
         order = get_order_by_ref_id(ref_id)
         print(order.status)
         return render(request, 'order_details.html', {'order': order,
-                                                      'order_status_name': ['Fetch', 'Received', 'Confirmed', 'Processing', 'Ready', 'Given', ''][order.status]
+                                                      'order_status_name': ['Fetch', 'Received', 'Confirm', 'Processing', 'Ready', 'Given', ''][order.status]
                                                       })
 
 
@@ -152,7 +153,87 @@ class OrderDetailView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse_lazy('order_detail', kwargs = {'ref_id': order.ref_id}))
 
 
+class OrderEditView(LoginRequiredMixin, View):
+    login_url = 'final_login'
+    redirect_field_name = 'redirect_to'
+    template_name = "order_create_new.html"
 
+    def post(self, request, ref_id, *args, **kwargs):
+        customer_uid      = (request.session['uname_create_order_existing'] if 'uname_create_order_existing' in request.session else 0)
+        customuser_form = UnregisteredUserForm(request.POST, prefix='customuser_form')
+        customeruser_form = UnregisteredCustomerForm(request.POST, prefix='customeruser_form')
+        baseorder_form = BaseOrderForm(request.POST, prefix="baseorder_form")
+
+        if baseorder_form.is_valid():
+            order_form = baseorder_form.save(commit=False)
+
+            if request.user.is_employee or request.user.is_superuser:
+                # if customer_uid:
+                #     custom_user         = get_customer_by_uuid(customer_uid)
+                #     customer            = Customer.objects.get(user = custom_user)
+                #     order_form.customer = customer
+                #     del request.session['uname_create_order_existing']
+
+                if customuser_form.is_valid() and customeruser_form.is_valid():
+                    uform = customuser_form.save(commit=False)
+                    uform.is_customer = True
+                    uform.email = None
+                    uform.save()
+
+                    cuform = customeruser_form.save(commit=False)
+                    cuform.user = uform
+                    cuform.save()
+
+                    order_form.customer = cuform
+
+                else:
+                    return render(request, 'order_create_new.html', {
+                                                    'baseorder_form'   : baseorder_form,
+                                                    'customuser_form'  : customuser_form,
+                                                    'customeruser_form': customeruser_form,
+                                                    'customer_uuid_opt': 0
+                                                })
+
+            elif request.user.is_customer:
+                order_form.customer = request.user.customer
+
+            # FILLER VALUES
+            prev_order = get_order_by_ref_id(ref_id)
+            order_form.delivery_price = prev_order.delivery_price
+            order_form.service_price = prev_order.service_price
+            order_form.weight = prev_order.weight
+
+            order_form.save()
+
+            if order_form.status == 1:
+                return HttpResponseRedirect(reverse_lazy('order_view'))
+            else:
+                return HttpResponseRedirect(reverse_lazy('order_received', kwargs = {'ref_id': order_form.ref_id}))
+
+        else:
+            return render(request, 'order_create_new.html', {'baseorder_form': baseorder_form, 'customuser_form': customuser_form, 'customeruser_form': customeruser_form})
+
+
+    def get(self, request, ref_id, uid = None):
+        order = get_order_by_ref_id(ref_id)
+        customuser_form = None
+        customeruser_form = None
+
+        if request.user.is_employee or request.user.is_superuser:
+            # if customer_uid:
+            #     print("UID:", customer_uid)
+            # if:
+            customuser_form = UnregisteredUserForm(instance = order.customer.user, prefix='customuser_form')
+            customeruser_form = UnregisteredCustomerForm(instance = order.customer, prefix='customeruser_form')
+
+        baseorder_form = BaseOrderForm(instance = order, prefix="baseorder_form")
+        return render(request, 'order_create_new.html', {
+                                        'baseorder_form'   : baseorder_form,
+                                        'customuser_form'  : customuser_form,
+                                        'customeruser_form': customeruser_form,
+                                        'customer_uuid_opt': uid,
+                                        # 'existing_customer': True if customer_uid else False
+                                    })
 
 
 class OrderOptionView(LoginRequiredMixin, View):

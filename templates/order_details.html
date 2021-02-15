@@ -93,10 +93,18 @@
 
                           <form method="post">
                               {% csrf_token %}
-                              {% if order.status != 6 %}
-                              <button type="submit" name="update_fetch" class="btn btn-primary mt-3">{{ order_status_name }} </button>
+                              {% if request.user.is_customer %}
+                                  {% if order.status == 2 %}
+                                  <button type="submit" name="update_confirmed" class="btn btn-primary mt-6">{{ order_status_name }} </button>
+                                  {% endif %}
+                              {% else %}
+                                  {% if order.status != 6 %}
+                                  <button type="submit" name="update_confirmed" class="btn btn-primary mt-6">{{ order_status_name }} </button>
+                                  {% endif %}
                               {% endif %}
                           </form>
+
+                          <a href="{% url 'order_edit' order.ref_id %}"><button type="button" class="btn btn-primary mt-6">Edit</button></a>
 
                       </fieldset>
                       <div class = "panel-footer text-right m-5">
