@@ -24,6 +24,44 @@
 
   <body>
       <div class="animate-bottom">
+          {% if customuser_form.errors %}
+              {% for field in customuser_form %}
+                  {% for error in field.errors %}
+                  <div class="alert alert-danger alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      <p> <strong> <i class="fas fa-exclamation-triangle"></i> Error! </strong>  User with this email already exists! </p>
+                  </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in customuser_form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <div class="alert alert-danger alert-dismissible">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <p> <strong> <i class="fas fa-exclamation-triangle"></i> Error! </strong>  User with this email already exists! </p>
+                      </div>
+                  </div>
+              {% endfor %}
+          {% endif %}
+          {% if customeruser_form.errors %}
+              {% for field in customeruser_form %}
+                  {% for error in field.errors %}
+                      <div class="alert alert-danger">
+                          <div class="alert alert-danger alert-dismissible">
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              <p> <strong> <i class="fas fa-exclamation-triangle"></i> Error! </strong>  User with this email already exists! </p>
+                          </div>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in customeruser_form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <div class="alert alert-danger alert-dismissible">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <p> <strong> <i class="fas fa-exclamation-triangle"></i> Error! </strong>  User with this email already exists! </p>
+                      </div>
+                  </div>
+              {% endfor %}
+          {% endif %}
 <section class = "Form my-4 mx-5">
   <div class = "container">
     <div class = "row no-gutters">
@@ -51,32 +89,7 @@
             </div>
         {% endfor %}
 
-        {% if customuser_form.errors %}
-            {% for field in customuser_form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger" onload="popUp({{ error }})">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            {% for error in customuser_form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-            {% for field in customeruser_form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            {% for error in customeruser_form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
+
         <button type="submit" name="button" class = "btn1 mt-2" value="signup"> Create Account </button>
         <p class = "mt-1 mb-0" style = "font-size: 12px;"> Already have an account? <a href = "{% url 'final_login' %}"> Login Here </a> </p>
     </div>

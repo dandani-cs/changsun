@@ -44,6 +44,15 @@ class UnregisteredCustomerForm(forms.ModelForm):
                   'contact': _("Contact Number")
         }
 
+    def clean(self):
+        cleaned_data = super(UnregisteredCustomerForm, self).clean()
+
+        contact = cleaned_data.get("contact")
+
+        if not contact.isnumeric():
+            raise forms.ValidationError("Please input a valid number.")
+
+
 
 class ReceivedOrderForm(forms.ModelForm):
     class Meta:

@@ -36,6 +36,8 @@ class UserForm(forms.ModelForm):
 
 
 
+
+
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -62,6 +64,15 @@ class CustomerUserForm(forms.ModelForm):
         labels = {
                   'contact': _("Contact Number"),
         }
+
+    def clean(self):
+        cleaned_data = super(CustomerUserForm, self).clean()
+
+        contact = cleaned_data.get("contact")
+
+        if not contact.isnumeric():
+            raise forms.ValidationError("Please input a valid number.")
+
 
 
 class CustomerEditForm(forms.ModelForm):

@@ -76,7 +76,7 @@
                               {% else %} Drop-off
                               {% endif %}
                           </p>
-                          <p> Retrival:
+                          <p> Retrieval:
                               {% if order.retrieval_type == 0 %} Delivery
                               {% else %} Pick-up
                               {% endif %}
@@ -92,18 +92,25 @@
                           <h3 class="fieldset-title"> Other information </h3>
                           <p> Delivery price: Php{{ order.delivery_price }} </p>
                           <p> Service price: Php{{ order.service_price }} </p>
-                          <p> Weight: {{ order.weight }}kg </p>
+                          <p> {% if order.service != 3 %} Weight:  {{ order.weight }}kg
+                              {% else %} Pieces: {{order.weight}}pcs
+                              {% endif %}
+                          </p>
 
 
                           <form method="post">
                               {% csrf_token %}
                               {% if request.user.is_customer %}
                                   {% if order.status == 2 %}
-                                  <button type="submit" name="update_confirmed" class="btn btn-primary mt-6">{{ order_status_name }} </button>
+                                  <button type="submit" name="update_confirmed" class="btn btn-primary mt-6">{{ order_status_name }} </button></a>
                                   {% endif %}
                               {% else %}
                                   {% if order.status != 6 %}
+                                    {% if order.status == 1 %}
+                                        <a href="{% url 'order_received' order.ref_id %}"><button type="button" name="update_confirmed" class="btn btn-primary mt-6">{{ order_status_name }} </button></a>
+                                    {% else %}
                                   <button type="submit" name="update_confirmed" class="btn btn-primary mt-6">{{ order_status_name }} </button>
+                                    {% endif %}
                                   {% endif %}
                               {% endif %}
                           </form>

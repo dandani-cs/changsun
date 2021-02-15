@@ -259,6 +259,36 @@
 			});
 		});
 
+        $(function() {
+            $(document).ready(function () {
+                if (($("#inputRetrieval").val() == "0")) {
+					$("#loc").show();
+					$("#map").show();
+					$("#distance").show();
+				} else {
+					$("#loc").hide();
+					$("#map").hide();
+					$("#distance").hide();
+				}
+
+                $("#inputProvision").change(function () {
+    				if ($(this).val() == "0") {
+    					$("#loc").show();
+    					$("#map").show();
+    					$("#distance").show();
+    				} else {
+    					$("#loc").hide();
+    					$("#map").hide();
+    					$("#distance").hide();
+    				}
+    			});
+
+
+            });
+        });
+
+
+
 		function haversine_distance(mk1, mk2) {
 			var R = 3958.8; // Radius of the Earth in miles
 			var rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians

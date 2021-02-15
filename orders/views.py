@@ -171,6 +171,8 @@ class ReceivedOrderView(LoginRequiredMixin, View):
             print("Service ({}), Weight: ({}), Base Price ({})".format(order.service, order.weight, base_price))
             print("Computed service price: ({})".format(order.service_price))
 
+            order.status = 2
+
             order.save()
 
 
@@ -209,20 +211,16 @@ class OrderEditView(LoginRequiredMixin, View):
     template_name = "order_create_new.html"
 
     def post(self, request, ref_id, *args, **kwargs):
+        prev_order = get_order_by_ref_id(ref_id)
         customer_uid      = (request.session['uname_create_order_existing'] if 'uname_create_order_existing' in request.session else 0)
-        customuser_form = UnregisteredUserForm(request.POST, prefix='customuser_form')
-        customeruser_form = UnregisteredCustomerForm(request.POST, prefix='customeruser_form')
-        baseorder_form = BaseOrderForm(request.POST, prefix="baseorder_form")
+        customuser_form = UnregisteredUserForm(request.POST, prefix='customuser_form', instance = prev_order)
+        customeruser_form = UnregisteredCustomerForm(request.POST, prefix='customeruser_form', instance = prev_order)
+        baseorder_form = BaseOrderForm(request.POST, prefix="baseorder_form", instance = prev_order)
 
         if baseorder_form.is_valid():
             order_form = baseorder_form.save(commit=False)
 
             if request.user.is_employee or request.user.is_superuser:
-                # if customer_uid:
-                #     custom_user         = get_customer_by_uuid(customer_uid)
-                #     customer            = Customer.objects.get(user = custom_user)
-                #     order_form.customer = customer
-                #     del request.session['uname_create_order_existing']
 
                 if customuser_form.is_valid() and customeruser_form.is_valid():
                     uform = customuser_form.save(commit=False)
@@ -234,7 +232,7 @@ class OrderEditView(LoginRequiredMixin, View):
                     cuform.user = uform
                     cuform.save()
 
-                    order_form.customer = cuform
+                    order_form.customer = prev_order.customer
 
                 else:
                     return render(request, 'order_create_new.html', {
@@ -248,7 +246,7 @@ class OrderEditView(LoginRequiredMixin, View):
                 order_form.customer = request.user.customer
 
             # FILLER VALUES
-            prev_order = get_order_by_ref_id(ref_id)
+
             order_form.delivery_price = prev_order.delivery_price
             order_form.service_price = prev_order.service_price
             order_form.weight = prev_order.weight
@@ -298,6 +296,7 @@ class OrderOptionView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse_lazy('order_new'))
 
 
+
 class CustomerSearchView(LoginRequiredMixin, ListView):
     model = Customer
     template_name = "user_search.html"
@@ -314,6 +313,11 @@ class CustomerSearchView(LoginRequiredMixin, ListView):
 
         else:
             return Customer.objects.all()
+
+    def get(self, request):
+        if request.user.is_customer:
+            return HttpResponseRedirect(reverse_lazy('invalid'))
+        return super(CustomerSearchView, self).get(self, request)
 
     def post(self, request):
         username = self.request.POST.get('username')
