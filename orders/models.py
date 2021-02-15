@@ -80,7 +80,7 @@ class Order(models.Model):
     status = models.IntegerField(choices=OrderStatus.STATUS_CHOICES)
     service = models.IntegerField(choices=OrderService.SERVICE_CHOICES)
 
-    address = models.CharField(max_length=100, blank=True)
+    address = models.CharField(max_length=1000, blank=True)
     order_time = models.DateTimeField(auto_now_add=True)
 
     delivery_price = models.DecimalField(max_digits=6, decimal_places=2)

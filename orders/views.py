@@ -75,7 +75,12 @@ class OrderCreateView(LoginRequiredMixin, View):
                 order_form.customer = request.user.customer
 
             # FILLER VALUES
-            order_form.delivery_price = 0
+            dist_num = float(request.POST['dist_num'])
+            if dist_num > 1:
+                order_form.delivery_price = math.ceil(dist_num) * 20
+            else:
+                order_form.delivery_price = 0
+
             order_form.service_price = 0
             order_form.weight = 0
 

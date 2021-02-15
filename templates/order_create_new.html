@@ -26,8 +26,7 @@
                       <div class="user-info">
                           <img class="img-profile img-responsive center-block" src="{% static 'img/c_logo.png' %}" alt="changsan logo">
                           <ul class="meta list list-unstyled">
-                              <li class="name">{{ name }}</li>
-                              <li class="email"><a href="#">{{ user_email }}</a></li>
+                              <li class="name">{{ request.user.first_name }} {{ request.user.last_name }}</li>
                           </ul>
                       </div>
               		<nav class="side-menu">
@@ -71,33 +70,46 @@
                                   </div>
                               {% endif %}
 
-
-                          <div class = "form-group col-md-12">
-                            <label class = "label" for="inputAddress">Home Address: </label>
-                            {{ baseorder_form.address }}
-                          </div>
-
                           <div class = "form-inline">
-                            <div class = "form-group col-md-4">
+                            <div class = "form-group col-md-6">
                               <label class = "label" for="inputProvision">Provision Type: </label>
                                 {{ baseorder_form.provision_type }}
                             </div>
 
-                            <div class = "form-group col-md-4">
+                            <div class = "form-group col-md-6">
                               <label class = "label" for="inputRetrieval">Retrieval Type: </label>
                               {{ baseorder_form.retrieval_type }}
                             </div>
+                        </div>
 
-                            <div class = "form-group col-md-4">
+                        <div class = "form-inline">
+
+                            <div class = "form-group col-md-6">
                               <label class = "label" for="inputService">Service: </label>
                               {{ baseorder_form.service }}
                             </div>
-                          </div>
 
-                          <div class = "form-group col-md-12">
+
+                          <div class = "form-group col-md-6">
                             <label class = "label" for="inputStatus">Status: </label>
                             {{ baseorder_form.status }}
                           </div>
+
+                      </div>
+
+                          <div class ="form-group col-md-12" id = "loc" style= "display: none">
+                      		<!-- address -->
+                      		<label>Home Address: </label>
+                      		{{ baseorder_form.address }}
+                      		<input type="hidden" id="lat" value="">
+                      		<input type="hidden" id="lng" value="">
+                        </div>
+
+                        <div class = "form-group col-md-12">
+                          	<div id="map" style="display: none; width: 100%; height: 400px"></div>
+                          	<div id="distance"></div>
+                            <input type="hidden" name="dist_num" id="dist_num" value="0"/>
+                        </div>
 
                           <div class = "form-group col-md-12">
                             <label class = "label" for="inputStatus">Comments: </label>
@@ -171,6 +183,93 @@
         </div>
         </div>
     </footer>
+
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&language=en&output=json&key=AIzaSyDd6tr6EHkRWtwujV7WUimsaXSPs0c7lq8" async defer></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+	<script type="text/javascript">
+
+		function initAutocomplete() {
+			var map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: 14.801324393209953, lng: 120.93481775225001 },
+				zoom: 15
+			});
+
+			var mk1, mk2;
+			var loc2;
+
+			const loc1 = {lat: 14.801324393209953, lng: 120.93481775225001};
+			mk1 = new google.maps.Marker({position: loc1, map: map});
+
+			//destination address
+			var address = document.getElementById('add');
+			var autocomplete = new google.maps.places.Autocomplete(address);
+
+			autocomplete.addListener('place_changed', function() {
+				var place = autocomplete.getPlace();
+				var latitude = place.geometry.location.lat();
+				var longitude = place.geometry.location.lng();
+				document.getElementById('lat').value = latitude;
+				document.getElementById('lng').value = longitude;
+
+				//landmark
+				loc2 = {lat: latitude, lng: longitude};
+
+				//marker
+				mk2 = new google.maps.Marker({position: loc2, map: map});
+
+				//draw line
+				var line = new google.maps.Polyline({path: [loc1, loc2], map: map});
+
+				//calculate and display distance between the source and destination addresses
+				var distance = haversine_distance(mk1, mk2);
+                document.getElementById('dist_num').value = distance.toFixed(2);
+				document.getElementById('distance').innerHTML = "Distance from Changsun LaundryShop to your location: " + distance.toFixed(2) + " mi.";
+			});
+		}
+
+		//hide unhide based on provision
+		$(function () {
+			$("#inputProvision").change(function () {
+				if ($(this).val() == "0") {
+					$("#loc").show();
+					$("#map").show();
+					$("#distance").show();
+				} else {
+					$("#loc").hide();
+					$("#map").hide();
+					$("#distance").hide();
+				}
+			});
+		});
+
+		//hide unhide based on retrieval
+		$(function () {
+			$("#inputRetrieval").change(function () {
+				if ($(this).val() == "0") {
+					$("#loc").show();
+					$("#map").show();
+					$("#distance").show();
+				} else {
+					$("#loc").hide();
+					$("#map").hide();
+					$("#distance").hide();
+				}
+			});
+		});
+
+		function haversine_distance(mk1, mk2) {
+			var R = 3958.8; // Radius of the Earth in miles
+			var rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
+			var rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
+			var difflat = rlat2-rlat1; // Radian difference (latitudes)
+			var difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
+			var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+			return d;
+	}
+
+	</script>
 
 
 

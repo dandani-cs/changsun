@@ -11,11 +11,11 @@ class BaseOrderForm(forms.ModelForm):
         model = Order
         fields = ('provision_type', 'retrieval_type', 'service', 'address', 'status', 'comments')
         widgets = {
-                   "provision_type": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2", 'id': 'provision-choice'}),
-                   "retrieval_type": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2", 'id': 'retrieval-choice'}),
+                   "provision_type": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2", 'id': 'inputProvision'}),
+                   "retrieval_type": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2", 'id': 'inputRetrieval'}),
                    "service": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2"}),
-                   "address": forms.TextInput(attrs = {"class": "form-control", 'id': 'address-input'}),
-                   "status": forms.Select(attrs={'class': "form-control"}),
+                   "address": forms.TextInput(attrs = {"class": "form-control", 'id': 'add'}),
+                   "status": forms.Select(attrs={'class': "custom-select my-1 mr-sm-2"}),
                    "comments": forms.Textarea(attrs={'class': "form-control"})
         }
 
